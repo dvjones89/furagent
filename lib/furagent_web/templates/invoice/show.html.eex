@@ -1,0 +1,3 @@
+<h2> <%= @invoice.reference %> </h2>
+<div> <%= @invoice.description %> </div>
+

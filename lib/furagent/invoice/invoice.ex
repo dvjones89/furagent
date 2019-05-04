@@ -18,6 +18,12 @@ defmodule Furagent.Invoice.Invoice do
     |> validate_required([:reference])
   end
 
+  def create_invoice(attrs \\ %{}) do
+    %Invoice{}
+    |> Invoice.changeset(attrs)
+    |> Repo.insert()
+  end
+
   def list_invoices do
     Repo.all(Invoice)
   end

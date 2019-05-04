@@ -3,7 +3,9 @@
     <h2>Invoices</h2>
     <ul>
       <%= for invoice <- @invoices do %>
-        <li><%= invoice.reference %></li>
+        <li>
+          <%= link invoice.reference, to: Routes.invoice_path(@conn, :show, invoice.id) %>
+        </li>
       <% end %>
       <%#   <a href="https://hexdocs.pm/phoenix/overview.html">Guides &amp; Docs</a>
       </li>
