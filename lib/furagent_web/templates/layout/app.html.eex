@@ -12,20 +12,20 @@
     <section class="container">
       <nav role="navigation">
         <ul>
-           <li><%= link "New Invoice", to: Routes.invoice_path(@conn, :new) %></li>
-        </ul>
-      </nav>
-        <img src="<%= Routes.static_path(@conn, "/images/funandfurry_paw_logo.png") %>" alt="Fun & Furry Logo"/>
-        <h1>Welcome to FurAgent</h1>
-    </section>
-  </header>
-  <main role="main" class="container">
-    <p class="alert alert-info" role="alert"><%= get_flash(@conn, :info) %></p>
-    <p class="alert alert-danger" role="alert"><%= get_flash(@conn, :error) %></p>
-    <%# <section class="phx-hero">
-      <h1>Welcome to FurAgent</h1>
-      <p>Less Admin, More Cuddles</p>
-    </section> %>
+         <li><%= link "New Invoice", to: Routes.invoice_path(@conn, :new) %></li>
+       </ul>
+     </nav>
+     <%=
+     Routes.static_path(@conn, "/images/funandfurry_paw_logo.png")
+     |> img_tag()
+     |> link(to: Routes.invoice_path(@conn, :index))
+     %>
+     <h1>Welcome to FurAgent</h1>
+   </section>
+ </header>
+ <main role="main" class="container">
+  <p class="alert alert-info" role="alert"><%= get_flash(@conn, :info) %></p>
+  <p class="alert alert-danger" role="alert"><%= get_flash(@conn, :error) %></p>
     <%= render @view_module, @view_template, assigns %>
   </main>
   <script type="text/javascript" src="<%= Routes.static_path(@conn, "/js/app.js") %>"></script>
