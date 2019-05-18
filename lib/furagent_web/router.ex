@@ -15,6 +15,8 @@ defmodule FuragentWeb.Router do
 
   scope "/", FuragentWeb do
     pipe_through :browser
+
+    get "/", InvoiceController, :index
     resources "/invoices", InvoiceController
   end
 
