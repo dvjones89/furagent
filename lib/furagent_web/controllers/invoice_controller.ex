@@ -9,6 +9,16 @@ defmodule FuragentWeb.InvoiceController do
   end
 
   def new(conn, _params) do
+    options = [hackney: [basic_auth: {System.get_env("FREEAGENT_CLIENT_ID"), System.get_env("FREEAGENT_CLIENT_SECRET")}]]
+    headers = %{"Content-Type" => "application/x-www-form-urlencoded"}
+    body = URI.encode_query(%{"grant_type" => "refresh_token", "refresh_token" => System.get_env("FREEAGENT_REFRESH_TOKEN")})
+    response = HTTPoison.post!("https://api.sandbox.freeagent.com/v2/token_endpoint", body, headers, options)
+    access_token = Poison.decode!(response.body)["access_token"]
+    headers = ["Authorization": "Bearer #{access_token}"]
+    response = HTTPoison.get!("https://api.sandbox.freeagent.com/v2/contacts", headers)
+    contacts = Poison.decode!(response.body)["contacts"]
+    Enum.map(contacts, fn c -> c["first_name"] end)
+
     changeset = Invoice.changeset(%Invoice{}, %{})
     render(conn, "new.html", changeset: changeset)
   end
