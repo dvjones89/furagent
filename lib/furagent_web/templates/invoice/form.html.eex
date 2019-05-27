@@ -1,6 +1,7 @@
 <%= form_for @changeset, @action, fn f -> %>
   <div class="form-group">
     <%= select f, :freeagent_contact_id, @contacts %>
+    <%= link "update", to: "/freeagent/sync_contacts" %>
   </div>
 
   <div class="form-group">

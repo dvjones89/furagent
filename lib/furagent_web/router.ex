@@ -18,6 +18,7 @@ defmodule FuragentWeb.Router do
 
     get "/", InvoiceController, :index
     resources "/invoices", InvoiceController
+    get "/freeagent/sync_contacts", FreeAgentController, :sync_contacts
   end
 
 
