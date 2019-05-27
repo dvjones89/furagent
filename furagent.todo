@@ -1,0 +1,3 @@
+ ☐ Only refresh access token if existing token has expired
+ ☐ Move contact synchronise to a cron task / button, rather than downloading contacts on each request to /new
+ ☐ Save contacts in local DB rather than storing in memory

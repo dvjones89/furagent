@@ -16,11 +16,11 @@ defmodule FuragentWeb.InvoiceController do
     access_token = Poison.decode!(response.body)["access_token"]
     headers = ["Authorization": "Bearer #{access_token}"]
     response = HTTPoison.get!("https://api.sandbox.freeagent.com/v2/contacts", headers)
-    contacts = Poison.decode!(response.body)["contacts"]
-    Enum.map(contacts, fn c -> c["first_name"] end)
+    contact_list = Poison.decode!(response.body)["contacts"]
 
+    contacts = Enum.map(contact_list, fn c -> c["first_name"] end)
     changeset = Invoice.changeset(%Invoice{}, %{})
-    render(conn, "new.html", changeset: changeset)
+    render(conn, "new.html", changeset: changeset, contacts: contacts)
   end
 
   def create(conn, %{"invoice" => invoice_params}) do
