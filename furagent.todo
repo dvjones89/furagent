@@ -1,4 +1,4 @@
- ☐ Only refresh access token if existing token has expired
+ ✔ Only refresh access token if existing token has expired @done (19-05-28 20:48)
  ✔ Move contact synchronise to a cron task / button, rather than downloading contacts on each request to /new @done (19-05-27 22:51)
  ✔ Save contacts in local DB rather than storing in memory @done (19-05-27 22:51)
  ☐ Rename Contact.freeagent_contact_id to Contact.freeagent_id

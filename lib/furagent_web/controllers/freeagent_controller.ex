@@ -3,18 +3,12 @@ defmodule FuragentWeb.FreeAgentController do
   alias Furagent.Invoice.Invoice
   alias Furagent.Contact.Contact
   alias Furagent.Repo
+  alias Furagent.FreeAgent.FreeAgent
 
   def sync_contacts(conn, _params) do
-    options = [hackney: [basic_auth: {System.get_env("FREEAGENT_CLIENT_ID"), System.get_env("FREEAGENT_CLIENT_SECRET")}]]
-    headers = %{"Content-Type" => "application/x-www-form-urlencoded"}
-    body = URI.encode_query(%{"grant_type" => "refresh_token", "refresh_token" => System.get_env("FREEAGENT_REFRESH_TOKEN")})
-    response = HTTPoison.post!("https://api.sandbox.freeagent.com/v2/token_endpoint", body, headers, options)
-    access_token = Poison.decode!(response.body)["access_token"]
-    headers = ["Authorization": "Bearer #{access_token}"]
-    response = HTTPoison.get!("https://api.sandbox.freeagent.com/v2/contacts", headers)
-    contact_list = Poison.decode!(response.body)["contacts"]
+    fa_contacts = FreeAgent.get_contacts()
 
-    Enum.each contact_list, fn(fa_contact) ->
+    Enum.each fa_contacts, fn(fa_contact) ->
       fa_id = fa_contact["url"] |> String.split("/") |> List.last |> String.to_integer
       case Repo.get_by(Contact, freeagent_contact_id: fa_id) do
         nil -> %Contact{freeagent_contact_id: fa_id}
