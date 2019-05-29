@@ -2,3 +2,5 @@
  ✔ Move contact synchronise to a cron task / button, rather than downloading contacts on each request to /new @done (19-05-27 22:51)
  ✔ Save contacts in local DB rather than storing in memory @done (19-05-27 22:51)
  ☐ Rename Contact.freeagent_contact_id to Contact.freeagent_id
+ ✔ Change FreeAgent API requests to set per_page parameter from 25 (default) to 100. @done (19-05-29 21:26)
+ ✔ Handle pagination in FreeAgent's API response @done (19-05-29 21:26)

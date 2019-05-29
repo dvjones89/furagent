@@ -1,19 +1,27 @@
 defmodule Furagent.FreeAgent.FreeAgent do
 
-  def get_contacts do
+  def get_contacts(page_number \\ 1, retrieved_contacts \\ []) do
     access_token = System.get_env("FREEAGENT_ACCESS_TOKEN") || refresh_access_token
     headers = ["Authorization": "Bearer #{access_token}"]
+    params = [page: page_number, "per_page": 100 ]
 
-    case HTTPoison.get("https://api.sandbox.freeagent.com/v2/contacts", headers) do
-      {:ok, %HTTPoison.Response{status_code: 200, body: body}} ->
-        IO.puts "Received 200 Response From FreeAgent. Decoding JSON"
-        Poison.decode!(body)["contacts"]
+    case HTTPoison.get("https://api.sandbox.freeagent.com/v2/contacts", headers, params: params) do
+      {:ok, %HTTPoison.Response{status_code: 200, headers: headers, body: body}} ->
+        retrieved_contacts = Enum.concat(retrieved_contacts, Poison.decode!(body)["contacts"])
+        fa_contact_count = Enum.into(headers, %{})["X-Total-Count"] |> String.to_integer
+
+        if length(retrieved_contacts) < fa_contact_count do
+          get_contacts(page_number + 1, retrieved_contacts)
+        else
+          retrieved_contacts
+        end
+
       {:ok, %HTTPoison.Response{status_code: 401}} ->
-        IO.puts "Received 401 Response From FreeAgent. Refreshing access token."
         refresh_access_token()
         get_contacts()
+
       {:error, %HTTPoison.Error{reason: reason}} ->
-        IO.inspect "Received Error From FreeAgent API: #{reason}"
+        IO.puts "Encountered error querying FreeAgent: #{reason}"
     end
   end
 
