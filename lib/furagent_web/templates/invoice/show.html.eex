@@ -1,7 +1,0 @@
-<div>
-  <%= link "Edit", to: Routes.invoice_path(@conn, :edit, @invoice.id), class: "btn btn-default" %>
-</div>
-
-<h2> <%= @invoice.reference %> </h2>
-<div> <%= @invoice.description %> </div>
-

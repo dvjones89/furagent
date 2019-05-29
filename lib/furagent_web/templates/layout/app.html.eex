@@ -12,13 +12,12 @@
     <section class="container">
       <nav role="navigation">
         <ul>
-         <li><%= link "New Invoice", to: Routes.invoice_path(@conn, :new) %></li>
        </ul>
      </nav>
      <%=
      Routes.static_path(@conn, "/images/funandfurry_paw_logo.png")
      |> img_tag()
-     |> link(to: Routes.invoice_path(@conn, :index))
+     |> link(to: Routes.invoice_path(@conn, :new))
      %>
      <h1>Welcome to FurAgent</h1>
    </section>

@@ -28,32 +28,4 @@ defmodule FuragentWeb.InvoiceController do
     end
   end
 
-  def edit(conn, %{"id" => id}) do
-    invoice = Repo.get!(Invoice, id)
-    changeset = Invoice.changeset(invoice, %{})
-    render(conn, "edit.html", invoice: invoice, changeset: changeset)
-  end
-
-
-  def show(conn, %{"id" => id}) do
-    invoice = Repo.get!(Invoice, id)
-    render(conn, "show.html", invoice: invoice)
-  end
-
-  def update(conn, %{"id" => id, "invoice" => invoice_params}) do
-    invoice = Repo.get!(Invoice, id)
-
-    invoice
-    |> Invoice.changeset(invoice_params)
-    |> Repo.update()
-    |> case do
-      {:ok, invoice} ->
-        conn
-        |> put_flash(:info, "Invoice updated successfully.")
-        |> redirect(to: Routes.invoice_path(conn, :show, invoice))
-      {:error, %Ecto.Changeset{} = changeset} ->
-        render(conn, "edit.html", invoice: invoice, changeset: changeset)
-    end
-  end
-
 end

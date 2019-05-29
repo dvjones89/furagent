@@ -1,3 +1,0 @@
-<h2>Edit invoice: <%= @invoice.reference %></h2>
-
-<%= render "form.html", Map.put(assigns, :action, Routes.invoice_path(@conn, :update, @invoice)) %>
