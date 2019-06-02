@@ -19,14 +19,8 @@
   </div>
 
   <div class="form-group">
-    <%= label f, :reference, class: "control-label" %>
-    <%= text_input f, :reference, class: "form-control" %>
-    <%= error_tag f, :reference %>
-  </div>
-
-  <div class="form-group">
     <%= label f, :description, class: "control-label" %>
-    <%= textarea f, :description, class: "form-control", rows: 5 %>
+    <%= text_input f, :description, class: "form-control" %>
     <%= error_tag f, :description %>
   </div>
 

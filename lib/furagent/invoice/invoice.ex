@@ -7,6 +7,8 @@ defmodule Furagent.Invoice.Invoice do
   schema "invoices" do
     field :description, :string
     field :reference, :string
+    field :start_date, :date
+    field :end_date, :date
 
     timestamps()
   end
@@ -14,8 +16,8 @@ defmodule Furagent.Invoice.Invoice do
   @doc false
   def changeset(invoice, attrs) do
     invoice
-    |> cast(attrs, [:reference, :description])
-    |> validate_required([:reference])
+    |> cast(attrs, [:reference, :description, :start_date, :end_date])
+    |> validate_required([:description, :start_date, :end_date])
   end
 
   def create_invoice(attrs \\ %{}) do
