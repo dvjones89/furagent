@@ -14,7 +14,7 @@ defmodule FuragentWeb.FreeAgentController do
         nil -> %Contact{freeagent_contact_id: fa_id}
         contact -> contact
       end
-      |> Contact.changeset(%{first_name: fa_contact["first_name"], last_name: fa_contact["last_name"]})
+      |> Contact.changeset(%{first_name: fa_contact["first_name"], last_name: fa_contact["last_name"], organisation_name: fa_contact["organisation_name"]})
       |> Repo.insert_or_update
     end
 

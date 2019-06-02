@@ -4,3 +4,4 @@
  ✔ Change FreeAgent API requests to set per_page parameter from 25 (default) to 100. @done (19-05-29 21:26)
  ✔ Handle pagination in FreeAgent's API response @done (19-05-29 21:26)
  ☐ Drop reference column from invoices table
+ ☐ Add support for FreeAgent contacts with organisation_name rather than first_name and list_name

@@ -11,7 +11,7 @@ defmodule FuragentWeb.InvoiceController do
 
   def new(conn, _params) do
     contact_list = Repo.all(Contact)
-    contacts = Enum.map(contact_list, fn c -> c.first_name end)
+    contacts = Enum.map(contact_list, fn c -> Contact.display_name(c) end)
     changeset = Invoice.changeset(%Invoice{}, %{start_date: Date.utc_today, end_date: Date.add(Date.utc_today, 7)})
     render(conn, "new.html", changeset: changeset, contacts: contacts)
   end
