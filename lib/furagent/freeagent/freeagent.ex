@@ -1,9 +1,10 @@
 defmodule Furagent.FreeAgent.FreeAgent do
+  alias Furagent.Contact.Contact
 
   def get_contacts(page_number \\ 1, retrieved_contacts \\ []) do
-    access_token = System.get_env("FREEAGENT_ACCESS_TOKEN") || refresh_access_token
+    access_token = System.get_env("FREEAGENT_ACCESS_TOKEN") || refresh_access_token()
     headers = ["Authorization": "Bearer #{access_token}"]
-    params = [page: page_number, "per_page": 100 ]
+    params = [page: page_number, per_page: 100 ]
 
     case HTTPoison.get("https://api.sandbox.freeagent.com/v2/contacts", headers, params: params) do
       {:ok, %HTTPoison.Response{status_code: 200, headers: headers, body: body}} ->
@@ -25,13 +26,28 @@ defmodule Furagent.FreeAgent.FreeAgent do
     end
   end
 
+  def create_invoice(contact, invoice_items) do
+    access_token = System.get_env("FREEAGENT_ACCESS_TOKEN") || refresh_access_token()
+    headers = ["Authorization": "Bearer #{access_token}", "Content-Type": "application/json"]
+    request = Poison.encode!(%{"invoice" => %{contact: Contact.to_url(contact), dated_on: Date.utc_today, payment_terms_in_days: 14, invoice_items: invoice_items}})
+    HTTPoison.post!("#{freeagent_url()}/invoices", request, headers)
+  end
+
   def refresh_access_token do
     options = [hackney: [basic_auth: {System.get_env("FREEAGENT_CLIENT_ID"), System.get_env("FREEAGENT_CLIENT_SECRET")}]]
     headers = %{"Content-Type" => "application/x-www-form-urlencoded"}
     body = URI.encode_query(%{"grant_type" => "refresh_token", "refresh_token" => System.get_env("FREEAGENT_REFRESH_TOKEN")})
-    response = HTTPoison.post!("https://api.sandbox.freeagent.com/v2/token_endpoint", body, headers, options)
+    response = HTTPoison.post!("#{freeagent_url()}/token_endpoint", body, headers, options)
     new_token = Poison.decode!(response.body)["access_token"]
     System.put_env("FREEAGENT_ACCESS_TOKEN", new_token)
+  end
+
+  def freeagent_url do
+    if Mix.env == :prod do
+      "https://api.freeagent.com/v2"
+    else
+      "https://api.sandbox.freeagent.com/v2"
+    end
   end
 
 end

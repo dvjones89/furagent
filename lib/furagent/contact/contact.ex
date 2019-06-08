@@ -21,4 +21,12 @@ defmodule Furagent.Contact.Contact do
   def display_name(contact) do
     "#{contact.first_name} #{contact.last_name} #{contact.organisation_name}"
   end
+  
+  def to_url(contact) do
+    if Mix.env == :prod do
+      "https://api.freeagent.com/v2/contacts/#{contact.freeagent_contact_id}"
+    else
+      "https://api.sandbox/freeagent.com/v2/contacts/#{contact.freeagent_contact_id}"
+    end
+  end
 end

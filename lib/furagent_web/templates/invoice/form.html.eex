@@ -1,7 +1,7 @@
 <%= form_for @changeset, @action, fn f -> %>
   <div class="form-group">
     <%= label f, :contact, class: "control-label" %>
-    <%= select f, :freeagent_contact_id, @contacts %>
+    <%= select f, :contact_id, @contacts %>
     <%= error_tag f, :contact %>
     <%= link "update", to: "/freeagent/sync_contacts" %>
   </div>

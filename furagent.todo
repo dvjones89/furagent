@@ -5,3 +5,6 @@
  ✔ Handle pagination in FreeAgent's API response @done (19-05-29 21:26)
  ☐ Drop reference column from invoices table
  ☐ Add support for FreeAgent contacts with organisation_name rather than first_name and list_name
+ ☐ Allow user to choose the service being offered (setting default price automatically)
+ ☐ Wire up the description input box so this is used in the description of each invoice item
+ ☐ Add error handling for failed API interactions (right now bad requests fail silently)
