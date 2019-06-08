@@ -1,25 +1,25 @@
 defmodule Furagent.FreeAgent.FreeAgent do
   alias Furagent.Contact.Contact
 
-  def get_contacts(page_number \\ 1, retrieved_contacts \\ []) do
+  def get_resources(resource, page_number \\ 1, retrieved_resources \\ []) do
     access_token = System.get_env("FREEAGENT_ACCESS_TOKEN") || refresh_access_token()
     headers = ["Authorization": "Bearer #{access_token}"]
     params = [page: page_number, per_page: 100 ]
 
-    case HTTPoison.get("https://api.sandbox.freeagent.com/v2/contacts", headers, params: params) do
+    case HTTPoison.get(Path.join(freeagent_url, resource), headers, params: params) do
       {:ok, %HTTPoison.Response{status_code: 200, headers: headers, body: body}} ->
-        retrieved_contacts = Enum.concat(retrieved_contacts, Poison.decode!(body)["contacts"])
+        retrieved_resources = Enum.concat(retrieved_resources, Poison.decode!(body)[resource])
         fa_contact_count = Enum.into(headers, %{})["X-Total-Count"] |> String.to_integer
 
-        if length(retrieved_contacts) < fa_contact_count do
-          get_contacts(page_number + 1, retrieved_contacts)
+        if length(retrieved_resources) < fa_contact_count do
+          get_resources(resource, page_number + 1, retrieved_resources)
         else
-          retrieved_contacts
+          retrieved_resources
         end
 
       {:ok, %HTTPoison.Response{status_code: 401}} ->
         refresh_access_token()
-        get_contacts()
+        get_resources("contacts")
 
       {:error, %HTTPoison.Error{reason: reason}} ->
         IO.puts "Encountered error querying FreeAgent: #{reason}"
