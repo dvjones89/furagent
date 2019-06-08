@@ -30,14 +30,14 @@ defmodule Furagent.FreeAgent.FreeAgent do
     access_token = System.get_env("FREEAGENT_ACCESS_TOKEN") || refresh_access_token()
     headers = ["Authorization": "Bearer #{access_token}", "Content-Type": "application/json"]
     request = Poison.encode!(%{"invoice" => %{contact: Contact.to_url(contact), dated_on: Date.utc_today, payment_terms_in_days: 14, invoice_items: invoice_items}})
-    HTTPoison.post!("#{freeagent_url()}/invoices", request, headers)
+    HTTPoison.post!(Path.join(freeagent_url, "invoices"), request, headers)
   end
 
   def refresh_access_token do
     options = [hackney: [basic_auth: {System.get_env("FREEAGENT_CLIENT_ID"), System.get_env("FREEAGENT_CLIENT_SECRET")}]]
     headers = %{"Content-Type" => "application/x-www-form-urlencoded"}
     body = URI.encode_query(%{"grant_type" => "refresh_token", "refresh_token" => System.get_env("FREEAGENT_REFRESH_TOKEN")})
-    response = HTTPoison.post!("#{freeagent_url()}/token_endpoint", body, headers, options)
+    response = HTTPoison.post!(Path.join(freeagent_url, "token_endpoint"), body, headers, options)
     new_token = Poison.decode!(response.body)["access_token"]
     System.put_env("FREEAGENT_ACCESS_TOKEN", new_token)
   end
