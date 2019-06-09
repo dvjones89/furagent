@@ -3,8 +3,9 @@
  ✔ Save contacts in local DB rather than storing in memory @done (19-05-27 22:51)
  ✔ Change FreeAgent API requests to set per_page parameter from 25 (default) to 100. @done (19-05-29 21:26)
  ✔ Handle pagination in FreeAgent's API response @done (19-05-29 21:26)
- ☐ Drop reference column from invoices table
- ☐ Add support for FreeAgent contacts with organisation_name rather than first_name and list_name
- ☐ Allow user to choose the service being offered (setting default price automatically)
- ☐ Wire up the description input box so this is used in the description of each invoice item
+ ✔ Allow user to choose the service being offered (setting default price automatically) @done (19-06-09 19:45)
+ ✔ Wire up the description input box so this is used in the description of each invoice item @done (19-06-09 19:45)
+ ☐ Add Google Authentication
+ ☐ Add support for user-supplied quantity
  ☐ Add error handling for failed API interactions (right now bad requests fail silently)
+ ☐ Delete invoices model and drop DB table.
