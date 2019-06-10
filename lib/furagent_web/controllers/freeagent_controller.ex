@@ -31,7 +31,7 @@ defmodule FuragentWeb.FreeAgentController do
         nil -> %PriceListItem{freeagent_price_list_id: fa_id}
         price_list_item -> price_list_item
       end
-      |> PriceListItem.changeset(%{name: fa_price_list_item["code"], price: fa_price_list_item["price"], type: fa_price_list_item["type"]})
+      |> PriceListItem.changeset(%{name: fa_price_list_item["code"], price: fa_price_list_item["price"], type: fa_price_list_item["item_type"]})
       |> Repo.insert_or_update
     end
 
