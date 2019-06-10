@@ -26,7 +26,7 @@ defmodule Furagent.Contact.Contact do
     if Mix.env == :prod do
       "https://api.freeagent.com/v2/contacts/#{contact.freeagent_contact_id}"
     else
-      "https://api.sandbox/freeagent.com/v2/contacts/#{contact.freeagent_contact_id}"
+      "https://api.sandbox.freeagent.com/v2/contacts/#{contact.freeagent_contact_id}"
     end
   end
 end
