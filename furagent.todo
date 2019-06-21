@@ -6,6 +6,6 @@
  ✔ Allow user to choose the service being offered (setting default price automatically) @done (19-06-09 19:45)
  ✔ Wire up the description input box so this is used in the description of each invoice item @done (19-06-09 19:45)
  ✔ Add Google Authentication @done (19-06-21 16:43)
- ☐ Add support for user-supplied quantity
+ ✔ Add support for user-supplied quantity @done (19-06-23 23:30)
  ☐ Add error handling for failed API interactions (right now bad requests fail silently)
  ☐ Delete invoices model and drop DB table.
