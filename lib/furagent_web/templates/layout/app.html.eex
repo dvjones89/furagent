@@ -12,6 +12,11 @@
     <section class="container">
       <nav role="navigation">
         <ul>
+          <%= if @user_signed_in? do %>
+            <li>
+              <%= link "Sign Out", to: Routes.session_path(@conn, :delete), method: :delete %>
+              </li>
+          <% end %>
        </ul>
      </nav>
      <%=
