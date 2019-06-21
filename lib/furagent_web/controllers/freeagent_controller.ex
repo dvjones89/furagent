@@ -1,6 +1,5 @@
 defmodule FuragentWeb.FreeAgentController do
   use FuragentWeb, :controller
-  alias Furagent.Invoice.Invoice
   alias Furagent.Contact.Contact
   alias Furagent.PriceListItem.PriceListItem
   alias Furagent.Repo

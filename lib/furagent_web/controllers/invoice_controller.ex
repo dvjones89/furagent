@@ -32,7 +32,7 @@ defmodule FuragentWeb.InvoiceController do
     end_date = Map.fetch!(invoice_params, "end_date") |> Date.from_iso8601!
     description = Map.fetch!(invoice_params, "description")
 
-    invoice_items = Date.range(end_date, start_date) |> Enum.reduce [], fn date, item_list ->
+    invoice_items = Date.range(end_date, start_date) |> Enum.reduce([], fn date, item_list ->
       new_item = %{
         quantity: 1,
         item_type: price_list_item.type,
@@ -40,7 +40,7 @@ defmodule FuragentWeb.InvoiceController do
         description: "#{date}: #{price_list_item.name}: #{description}"
       }
       [new_item | item_list]
-    end
+    end)
 
     FreeAgent.create_invoice(contact, invoice_items)
 

@@ -6,7 +6,7 @@ defmodule Furagent.FreeAgent.FreeAgent do
     headers = ["Authorization": "Bearer #{access_token}"]
     params = [page: page_number, per_page: 100 ]
 
-    case HTTPoison.get(Path.join(freeagent_url, resource), headers, params: params) do
+    case HTTPoison.get(Path.join(freeagent_url(), resource), headers, params: params) do
       {:ok, %HTTPoison.Response{status_code: 200, headers: headers, body: body}} ->
         retrieved_resources = Enum.concat(retrieved_resources, Poison.decode!(body)[resource])
         fa_contact_count = Enum.into(headers, %{})["X-Total-Count"] |> String.to_integer
@@ -30,14 +30,14 @@ defmodule Furagent.FreeAgent.FreeAgent do
     access_token = System.get_env("FREEAGENT_ACCESS_TOKEN") || refresh_access_token()
     headers = ["Authorization": "Bearer #{access_token}", "Content-Type": "application/json"]
     request = Poison.encode!(%{"invoice" => %{contact: Contact.to_url(contact), dated_on: Date.utc_today, payment_terms_in_days: 14, invoice_items: invoice_items}})
-    HTTPoison.post!(Path.join(freeagent_url, "invoices"), request, headers)
+    HTTPoison.post!(Path.join(freeagent_url(), "invoices"), request, headers)
   end
 
   def refresh_access_token do
     options = [hackney: [basic_auth: {System.get_env("FREEAGENT_CLIENT_ID"), System.get_env("FREEAGENT_CLIENT_SECRET")}]]
     headers = %{"Content-Type" => "application/x-www-form-urlencoded"}
     body = URI.encode_query(%{"grant_type" => "refresh_token", "refresh_token" => System.get_env("FREEAGENT_REFRESH_TOKEN")})
-    response = HTTPoison.post!(Path.join(freeagent_url, "token_endpoint"), body, headers, options)
+    response = HTTPoison.post!(Path.join(freeagent_url(), "token_endpoint"), body, headers, options)
     new_token = Poison.decode!(response.body)["access_token"]
     System.put_env("FREEAGENT_ACCESS_TOKEN", new_token)
   end
