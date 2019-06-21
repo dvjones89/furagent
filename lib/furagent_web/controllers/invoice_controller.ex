@@ -1,10 +1,13 @@
 defmodule FuragentWeb.InvoiceController do
   use FuragentWeb, :controller
+
   alias Furagent.Invoice.Invoice
   alias Furagent.Contact.Contact
   alias Furagent.PriceListItem.PriceListItem
   alias Furagent.Repo
   alias Furagent.FreeAgent.FreeAgent
+
+  plug Furagent.Plugs.AuthenticateUser
 
   def index(conn, _params) do
     invoices = Invoice.list_invoices()

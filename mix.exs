@@ -20,7 +20,7 @@ defmodule Furagent.MixProject do
   def application do
     [
       mod: {Furagent.Application, []},
-      extra_applications: [:logger, :runtime_tools, :httpoison, :poison]
+      extra_applications: [:logger, :runtime_tools]
     ]
   end
 
@@ -44,7 +44,9 @@ defmodule Furagent.MixProject do
       {:httpoison, "~> 1.4"},
       {:jason, "~> 1.0"},
       {:plug_cowboy, "~> 2.0"},
-      {:poison, "~> 3.1"}
+      {:poison, "~> 3.1"},
+      {:ueberauth, "~> 0.6"},
+      {:ueberauth_google, "~> 0.8"}
     ]
   end
 

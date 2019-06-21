@@ -1,0 +1,7 @@
+<section class="container">
+  <div class="row">
+    <div class="column"></div>
+    <div class="column"><a class="button button-outline" href="/auth/google">Sign in with Google</a></div>
+    <div class="column"></div>
+  </div>
+</section>

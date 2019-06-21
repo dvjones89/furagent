@@ -7,10 +7,19 @@ defmodule FuragentWeb.Router do
     plug :fetch_flash
     plug :protect_from_forgery
     plug :put_secure_browser_headers
+    plug Furagent.Plugs.SetCurrentUser
   end
 
   pipeline :api do
     plug :accepts, ["json"]
+  end
+
+  scope "/auth", FuragentWeb do
+    pipe_through [:browser]
+
+    get "/:provider", AuthController, :request
+    get "/:provider/callback", AuthController, :callback
+    post "/:provider/callback", AuthController, :callback
   end
 
   scope "/", FuragentWeb do
@@ -18,6 +27,7 @@ defmodule FuragentWeb.Router do
 
     get "/", InvoiceController, :new
     resources "/invoices", InvoiceController
+    resources "/sessions", SessionController, only: [:new, :create]
     get "/freeagent/sync_contacts", FreeAgentController, :sync_contacts
     get "/freeagent/sync_price_list_items", FreeAgentController, :sync_price_list_items
   end

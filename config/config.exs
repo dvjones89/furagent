@@ -10,6 +10,14 @@ use Mix.Config
 config :furagent,
   ecto_repos: [Furagent.Repo]
 
+config :ueberauth, Ueberauth,
+  providers: [
+    google: {Ueberauth.Strategy.Google, [] }
+  ]
+config :ueberauth, Ueberauth.Strategy.Google.OAuth,
+  client_id: System.get_env("GOOGLE_CLIENT_ID"),
+  client_secret: System.get_env("GOOGLE_SECRET")
+
 # Configures the endpoint
 config :furagent, FuragentWeb.Endpoint,
   url: [host: "localhost"],
