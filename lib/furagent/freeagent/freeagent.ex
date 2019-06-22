@@ -30,7 +30,21 @@ defmodule Furagent.FreeAgent.FreeAgent do
     access_token = System.get_env("FREEAGENT_ACCESS_TOKEN") || refresh_access_token()
     headers = ["Authorization": "Bearer #{access_token}", "Content-Type": "application/json"]
     request = Poison.encode!(%{"invoice" => %{contact: Contact.to_url(contact), dated_on: Date.utc_today, payment_terms_in_days: 14, invoice_items: invoice_items}})
-    HTTPoison.post!(Path.join(freeagent_url(), "invoices"), request, headers)
+
+    case HTTPoison.post(Path.join(freeagent_url(), "invoices"), request, headers) do
+      {:ok, %HTTPoison.Response{status_code: 201, body: body}} ->
+        IO.puts("Invoice created successfully! #{Poison.decode!(body)["invoice"]["url"]}")
+        true
+      {:ok, %HTTPoison.Response{status_code: 401, body: body}} ->
+        IO.puts("\n Received a 401 response from FreeAgent. Refreshing access token and retrying...")
+        IO.inspect(Poison.decode(body))
+        refresh_access_token()
+        create_invoice(contact, invoice_items)
+      {:ok, %HTTPoison.Response{body: body}}
+        IO.puts("\n Received an unhandled response from FreeAgent's API. Raw response below...")
+        IO.inspect(Poison.decode(body))
+        false
+    end
   end
 
   def refresh_access_token do
