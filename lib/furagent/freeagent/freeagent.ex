@@ -38,8 +38,9 @@ defmodule Furagent.FreeAgent.FreeAgent do
     headers = %{"Content-Type" => "application/x-www-form-urlencoded"}
     body = URI.encode_query(%{"grant_type" => "refresh_token", "refresh_token" => System.get_env("FREEAGENT_REFRESH_TOKEN")})
     response = HTTPoison.post!(Path.join(freeagent_url(), "token_endpoint"), body, headers, options)
-    new_token = Poison.decode!(response.body)["access_token"]
-    System.put_env("FREEAGENT_ACCESS_TOKEN", new_token)
+    new_access_token = Poison.decode!(response.body)["access_token"]
+    System.put_env("FREEAGENT_ACCESS_TOKEN", new_access_token)
+    new_access_token
   end
 
   def freeagent_url do
