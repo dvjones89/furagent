@@ -29,8 +29,8 @@ defmodule FuragentWeb.Router do
     resources "/invoices", InvoiceController
     resources "/sessions", SessionController, only: [:new]
     delete "/sign_out", SessionController, :delete
-    get "/freeagent/sync_contacts", FreeAgentController, :sync_contacts
-    get "/freeagent/sync_price_list_items", FreeAgentController, :sync_price_list_items
+    get "/sync/contacts", InvoiceController, :sync_contacts
+    get "/sync/price_list_items", InvoiceController, :sync_price_list_items
   end
 
 
