@@ -4,7 +4,7 @@ defmodule Furagent.Contact.Contact do
 
   schema "contacts" do
     field :first_name, :string
-    field :freeagent_contact_id, :integer
+    field :freeagent_id, :integer
     field :last_name, :string
     field :organisation_name, :string
 
@@ -14,8 +14,8 @@ defmodule Furagent.Contact.Contact do
   @doc false
   def changeset(contact, attrs) do
     contact
-    |> cast(attrs, [:first_name, :last_name, :organisation_name, :freeagent_contact_id])
-    |> validate_required([:first_name, :last_name, :freeagent_contact_id])
+    |> cast(attrs, [:first_name, :last_name, :organisation_name, :freeagent_id])
+    |> validate_required([:first_name, :last_name, :freeagent_id])
   end
 
   def display_name(contact) do
@@ -24,9 +24,9 @@ defmodule Furagent.Contact.Contact do
   
   def to_url(contact) do
     if Mix.env == :prod do
-      "https://api.freeagent.com/v2/contacts/#{contact.freeagent_contact_id}"
+      "https://api.freeagent.com/v2/contacts/#{contact.freeagent_id}"
     else
-      "https://api.sandbox.freeagent.com/v2/contacts/#{contact.freeagent_contact_id}"
+      "https://api.sandbox.freeagent.com/v2/contacts/#{contact.freeagent_id}"
     end
   end
 end

@@ -3,7 +3,7 @@ defmodule Furagent.PriceListItem.PriceListItem do
   import Ecto.Changeset
 
   schema "price_list_items" do
-    field :freeagent_price_list_id, :integer
+    field :freeagent_id, :integer
     field :name, :string
     field :type, :string
     field :price, :decimal
@@ -14,7 +14,7 @@ defmodule Furagent.PriceListItem.PriceListItem do
   @doc false
   def changeset(price_list_item, attrs) do
     price_list_item
-    |> cast(attrs, [:name, :type, :price, :freeagent_price_list_id])
-    |> validate_required([:name, :type, :price, :freeagent_price_list_id])
+    |> cast(attrs, [:name, :type, :price, :freeagent_id])
+    |> validate_required([:name, :type, :price, :freeagent_id])
   end
 end

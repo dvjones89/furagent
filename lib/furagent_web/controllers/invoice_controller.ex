@@ -25,27 +25,7 @@ defmodule FuragentWeb.InvoiceController do
   end
 
   def create(conn, %{"invoice" => invoice_params }) do
-    fa_contact_id = Map.fetch!(invoice_params, "contact_id")
-    fa_price_list_item_id = Map.fetch!(invoice_params, "price_list_item_id")
-    quantity = Map.fetch!(invoice_params, "quantity")
-    contact = Repo.get(Contact, fa_contact_id)
-    price_list_item = Repo.get(PriceListItem, fa_price_list_item_id)
-    start_date = Map.fetch!(invoice_params, "start_date") |> Date.from_iso8601!
-    end_date = Map.fetch!(invoice_params, "end_date") |> Date.from_iso8601!
-    description = Map.fetch!(invoice_params, "description")
-
-    invoice_items = Date.range(end_date, start_date) |> Enum.reduce([], fn date, item_list ->
-      new_item = %{
-        quantity: quantity,
-        item_type: price_list_item.type,
-        price: "#{price_list_item.price}",
-        description: "#{date}: #{price_list_item.name}: #{description}"
-      }
-      [new_item | item_list]
-    end)
-
-    FreeAgent.create_invoice(contact, invoice_items)
-
+    FreeAgent.create_invoice(invoice_params)
     redirect(conn, to: Routes.invoice_path(conn, :new))
   end
 
