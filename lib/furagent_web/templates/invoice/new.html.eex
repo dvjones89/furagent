@@ -1,3 +1,13 @@
+<%= if Mix.env != :prod do %>
+  <p class="alert alert-info" role="alert">
+    This instance of FurAgent is connected to the FreeAgent Sandbox. <br/>
+    Use FurAgent to create your invoice(s) and then follow the link below to check them out 👀<br/><br/>
+    <strong>Link:</strong> <%= link "https://furagent.sandbox.freeagent.com/invoices", to: "https://furagent.sandbox.freeagent.com/invoices", target: "_blank"%> <br/>
+    <strong>Email:</strong> furagent@dvj.me.uk <br/>
+    <strong>Password:</strong> wagging-tail
+  </p>
+<% end %>
+
 <h2>Add new invoice</h2>
 
 <%= render "form.html", Map.put(assigns, :action, Routes.invoice_path(@conn, :create)) %>

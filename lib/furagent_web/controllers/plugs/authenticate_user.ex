@@ -8,12 +8,16 @@ defmodule Furagent.Plugs.AuthenticateUser do
   end
 
   def call(conn, _params) do
-    if conn.assigns.user_signed_in? do
-      conn
+    if Mix.env == :prod do
+      if conn.assigns.user_signed_in? do
+        conn
+      else
+        conn
+        |> redirect(to: Helpers.session_path(conn, :new))
+        |> halt()
+      end
     else
       conn
-      |> redirect(to: Helpers.session_path(conn, :new))
-      |> halt()
     end
   end
 end
