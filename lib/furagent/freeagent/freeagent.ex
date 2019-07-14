@@ -62,7 +62,10 @@ defmodule Furagent.FreeAgent.FreeAgent do
     contact_id = Map.fetch!(params, "contact_id")
     contact = Repo.get(Contact, contact_id)
     invoice_items = create_invoice_items(params)
-    create_invoice_in_freeagent(contact, invoice_items)
+    start_date = Map.fetch!(params, "start_date") |> Date.from_iso8601!
+    days_to_pay = Date.diff(start_date, Date.utc_today) - 1
+    days_to_pay = Enum.max([days_to_pay, 0])
+    create_invoice_in_freeagent(contact, invoice_items, days_to_pay)
   end
 
   defp create_invoice_items(params) do
@@ -86,10 +89,11 @@ defmodule Furagent.FreeAgent.FreeAgent do
     end)
   end
 
-  defp create_invoice_in_freeagent(contact, invoice_items) do
+  defp create_invoice_in_freeagent(contact, invoice_items, days_to_pay) do
     access_token = System.get_env("FREEAGENT_ACCESS_TOKEN") || refresh_access_token()
     headers = ["Authorization": "Bearer #{access_token}", "Content-Type": "application/json"]
-    request = Poison.encode!(%{"invoice" => %{contact: Contact.to_url(contact), dated_on: Date.utc_today, payment_terms_in_days: 14, invoice_items: invoice_items}})
+
+    request = Poison.encode!(%{"invoice" => %{contact: Contact.to_url(contact), dated_on: Date.utc_today, payment_terms_in_days: days_to_pay, invoice_items: invoice_items}})
 
     case HTTPoison.post(Path.join(freeagent_url(), "invoices"), request, headers) do
       {:ok, %HTTPoison.Response{status_code: 201, body: body}} ->
@@ -99,7 +103,7 @@ defmodule Furagent.FreeAgent.FreeAgent do
         IO.puts("\n Received a 401 response from FreeAgent. Refreshing access token and retrying...")
         IO.inspect(Poison.decode(body))
         refresh_access_token()
-        create_invoice_in_freeagent(contact, invoice_items)
+        create_invoice_in_freeagent(contact, invoice_items, days_to_pay)
       {:ok, %HTTPoison.Response{body: body}}
         IO.puts("\n Received an unhandled response from FreeAgent's API. Raw response below...")
         IO.inspect(Poison.decode(body))
