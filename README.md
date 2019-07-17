@@ -1,20 +1,10 @@
 # Furagent
 
-To start your Phoenix server:
+## What Do FurAgent Do? 🚗
+FurAgent is a simple Elixir & Phoenix app that integrates with [FreeAgent](https://www.freeagent.com) and makes it easy to create multi-line invoices for services that span multiple days.  
 
-  * Install dependencies with `mix deps.get`
-  * Create and migrate your database with `mix ecto.setup`
-  * Install Node.js dependencies with `cd assets && npm install`
-  * Start Phoenix endpoint with `mix phx.server`
+The current FreeAgent user interface requires line items to be added individually, which gets a little painful when you're providing a daily service over multiple weeks (for example, Pet Sitting).
 
-Now you can visit [`localhost:4000`](http://localhost:4000) from your browser.
-
-Ready to run in production? Please [check our deployment guides](https://hexdocs.pm/phoenix/deployment.html).
-
-## Learn more
-
-  * Official website: http://www.phoenixframework.org/
-  * Guides: https://hexdocs.pm/phoenix/overview.html
-  * Docs: https://hexdocs.pm/phoenix
-  * Mailing list: http://groups.google.com/group/phoenix-talk
-  * Source: https://github.com/phoenixframework/phoenix
+## Can I See FurAgent In Action?
+Sure, you can check out FurAgent running in a sandbox environment:
+http://furagent-sandbox.herokuapp.com/
